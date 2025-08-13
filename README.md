@@ -34,32 +34,30 @@ sahay-sarthi/
 Installation
 Clone the repository:
 
-bash
-Copy code
-git clone <your-github-repo-url>
+bgit clone <your-github-repo-url>
 cd sahay-sarthi
-Backend Setup:
 
-bash
-Copy code
+
+
+Backend Setup:
 cd backend
 python -m venv venv
 venv\Scripts\activate  # Windows
 # source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
-Frontend Setup:
 
-bash
-Copy code
+
+
+Frontend Setup:
 cd ../frontend
 npm install
 npm start
-Run the backend server:
 
-bash
-Copy code
-cd ../backend
-python app.py
+Run the backend server:
+cd ../frontend
+npm install
+npm start
+
 Frontend will run on http://localhost:3000 and backend on http://127.0.0.1:5000.
 
 Usage
@@ -77,6 +75,15 @@ This project is open for contributions!
 Future updates may include AI-based suggestions, SMS notifications, and offline data collection for rural users.
 
 Feel free to submit PRs or suggest new features.
+
+
+## Future Plans
+
+- Integrate AI suggestions to recommend the best schemes automatically.
+- Enable offline data collection for farmers and other users without internet.
+- Send SMS notifications to users about suitable schemes using free APIs.
+- Collaborate with local government e-cafes like Akshaya in Kerala to help users apply.
+
 
 License
 MIT License © 2025
