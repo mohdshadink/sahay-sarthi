@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahay Sarthi - Scheme Finder</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        label { display: block; margin-top: 10px; }
+        input, select { padding: 5px; margin-top: 5px; width: 200px; }
+        button { margin-top: 15px; padding: 10px 15px; }
+        #result { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Sahay Sarthi - Find Matching Government Schemes</h2>
+
+    <form id="schemeForm">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" min="0" max="100" required>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="">Select</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+            <option value="other">Other</option>
+        </select>
+
+        <label for="state">State (if applicable):</label>
+        <select id="state" name="state">
+            <option value="">Select</option>
+            <option value="Bihar">Bihar</option>
+            <option value="Uttar Pradesh">Uttar Pradesh</option>
+            <option value="Madhya Pradesh">Madhya Pradesh</option>
+            <option value="Odisha">Odisha</option>
+            <option value="Rajasthan">Rajasthan</option>
+            <!-- Add all states here -->
+        </select>
+
+        <label for="profession">Profession (if applicable):</label>
+        <input type="text" id="profession" name="profession" placeholder="e.g., farmer, weaver">
+
+        <label for="income">Annual Income (if applicable):</label>
+        <input type="number" id="income" name="income" placeholder="e.g., 50000">
+
+        <label for="children" id="childrenLabel">Number of Children (if applicable):</label>
+        <input type="number" id="children" name="children" min="0" placeholder="e.g., 1">
+
+        <button type="submit">Find Schemes</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        const form = document.getElementById('schemeForm');
+        const ageInput = document.getElementById('age');
+        const childrenInput = document.getElementById('children');
+        const childrenLabel = document.getElementById('childrenLabel');
+        const resultDiv = document.getElementById('result');
+
+        // Hide children input if age is <= 10 (child-specific schemes)
+        ageInput.addEventListener('input', () => {
+            if (ageInput.value && Number(ageInput.value) <= 10) {
+                childrenInput.style.display = 'none';
+                childrenLabel.style.display = 'none';
+            } else {
+                childrenInput.style.display = 'block';
+                childrenLabel.style.display = 'block';
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const data = {
+                age: ageInput.value,
+                gender: document.getElementById('gender').value,
+                state: document.getElementById('state').value,
+                profession: document.getElementById('profession').value,
+                income: document.getElementById('income').value,
+                children: childrenInput.style.display === 'none' ? undefined : childrenInput.value
+            };
+
+            // Send POST request to backend
+            const response = await fetch('http://127.0.0.1:5000/match', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const resData = await response.json();
+
+            if(resData.schemes && resData.schemes.length > 0){
+                let html = '<h3>Matching Schemes:</h3><ul>';
+                resData.schemes.forEach(s => {
+                    html += `<li><b>${s.name}</b> - ${s.description} <br>Benefit: ${s.benefit} <br><a href="${s.application_link}" target="_blank">Apply Here</a></li><br>`;
+                });
+                html += '</ul>';
+                resultDiv.innerHTML = html;
+            } else {
+                resultDiv.innerHTML = '<p>No matching schemes found.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
