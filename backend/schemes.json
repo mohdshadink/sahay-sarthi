@@ -5,8 +5,7 @@
     "benefit": "High-interest savings account (up to 8.6% interest)",
     "eligibility": {
       "gender": ["female"],
-      "min_age": 1,
-      "max_age": 10,
+      "age": { "min": 1, "max": 10 },
       "min_children": 1
     },
     "application_link": "https://www.sukanyasamriddhi.gov.in/"
@@ -15,63 +14,66 @@
     "name": "Weaver MUDRA Loan Scheme",
     "description": "Financial support for handloom weavers",
     "benefit": "Loan up to ₹50,000 at 6% interest",
-    "eligibility": {},
+    "eligibility": { "profession": ["weaver"] },
     "application_link": "https://www.mudra.org.in/"
   },
   {
     "name": "PM Kisan Samman Nidhi",
     "description": "Income support for farmers",
     "benefit": "₹6,000/year in three installments",
-    "eligibility": {},
+    "eligibility": { "profession": ["farmer"] },
     "application_link": "https://pmkisan.gov.in/"
   },
   {
     "name": "Ayushman Bharat Yojana",
     "description": "Health insurance for low-income families",
     "benefit": "Health cover of ₹5 lakh per family per year",
-    "eligibility": {},
+    "eligibility": { "income": { "max": 200000 } },
     "application_link": "https://www.pmjay.gov.in/"
   },
   {
     "name": "Ujjwala Yojana",
     "description": "LPG connection for women",
     "benefit": "Free LPG connection with stove",
-    "eligibility": {"gender": ["female"]},
+    "eligibility": { "gender": ["female"] },
     "application_link": "https://www.pmuy.gov.in/"
   },
   {
     "name": "National Skill Development Scheme",
     "description": "Skill development programs for youth",
     "benefit": "Free training and certification",
-    "eligibility": {"age": {"min": 18, "max": 35}},
+    "eligibility": { "age": { "min": 10, "max": 35 } },
     "application_link": "https://www.nsdcindia.org/"
   },
   {
     "name": "Pradhan Mantri Awas Yojana",
     "description": "Affordable housing for urban poor",
     "benefit": "Subsidy for home construction",
-    "eligibility": {"income": {"max": 60000}},
+    "eligibility": {
+      "income": { "min": 1000, "max": 60000 },
+      "profession": ["labourer", "farmer", "daily wage worker", "artisan"]
+    },
     "application_link": "https://pmaymis.gov.in/"
   },
   {
     "name": "Stand Up India Scheme",
     "description": "Support for SC/ST and women entrepreneurs",
     "benefit": "Loan between ₹10 lakh to ₹1 crore",
-    "eligibility": {"gender": ["female"], "category": ["SC", "ST"]},
+    "eligibility": { "gender": ["female"], "category": ["SC", "ST"] },
     "application_link": "https://www.standupmitra.in/"
   },
   {
     "name": "Pradhan Mantri Jan Dhan Yojana",
     "description": "Financial inclusion for all",
     "benefit": "Bank account with zero balance, insurance cover",
-    "eligibility": {},
+    "eligibility": { "universal": true },
     "application_link": "https://pmjdy.gov.in/"
   },
   {
     "name": "National Scholarship Scheme",
     "description": "Scholarships for meritorious students",
     "benefit": "Financial aid for education",
-    "eligibility": {"age": {"min": 14, "max": 25}},
+    "eligibility": { "age": { "min": 14, "max": 25 }, "profession": ["student"] },
     "application_link": "https://scholarships.gov.in/"
   }
 ]

@@ -3,13 +3,9 @@ import ProfileForm from "./ProfileForm";
 import SchemeCard from "./SchemeCard";
 
 function Dashboard() {
-  const [schemes, setSchemes] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [matchedSchemes, setMatchedSchemes] = useState([]);
 
   const handleSubmit = async (formData) => {
-    setLoading(true);
-    setSchemes([]);
-
     try {
       const res = await fetch("http://127.0.0.1:5000/match", {
         method: "POST",
@@ -20,28 +16,27 @@ function Dashboard() {
       if (!res.ok) throw new Error("Failed to fetch");
 
       const data = await res.json();
-      setSchemes(data.schemes);
+      setMatchedSchemes(data.schemes || []);
     } catch (err) {
       console.error(err);
-      setSchemes([{ name: "Failed to fetch schemes. Please try again." }]);
+      setMatchedSchemes([]);
+      alert("Error fetching schemes from backend.");
     }
-
-    setLoading(false);
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "20px auto", fontFamily: "Arial, sans-serif" }}>
-      <h1>Sahay Sarthi - Find Matching Government Schemes</h1>
+    <div style={{ maxWidth: "700px", margin: "20px auto", fontFamily: "Arial, sans-serif" }}>
+      <h1 style={{ textAlign: "center" }}>Sahay Sarthi - Find Matching Government Schemes</h1>
       <ProfileForm onSubmit={handleSubmit} />
-      {loading && <p>Loading schemes...</p>}
-      {schemes.length > 0 && (
+      {matchedSchemes.length > 0 && (
         <div style={{ marginTop: "20px" }}>
           <h2>Matching Schemes:</h2>
-          {schemes.map((scheme, index) => (
-            <SchemeCard key={index} scheme={scheme} />
+          {matchedSchemes.map((scheme, idx) => (
+            <SchemeCard key={idx} scheme={scheme} />
           ))}
         </div>
       )}
+      {matchedSchemes.length === 0 && <p style={{ marginTop: "20px" }}>No matching schemes found.</p>}
     </div>
   );
 }

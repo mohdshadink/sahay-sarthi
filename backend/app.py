@@ -12,40 +12,70 @@ with open("schemes.json", "r", encoding="utf-8") as f:
 @app.route("/match", methods=["POST"])
 def find_schemes():
     user = request.json
+
+    # Normalize user inputs
+    user_data = {
+        "age": int(user.get("age", 0)),
+        "gender": user.get("gender", "").strip().lower(),
+        "income": int(user.get("income", 0)),
+        "numChildren": int(user.get("numChildren", 0)),
+        "profession": user.get("profession", "").strip().lower(),
+        "state": user.get("state", "").strip().lower(),
+        "category": user.get("category", "").strip().lower()
+    }
+
     matched_schemes = []
 
     for scheme in schemes:
-        eligible = True
         eligibility = scheme.get("eligibility", {})
+        eligible = True
 
-        # Check age
-        age_req = eligibility.get("age")
-        if age_req:
-            if not (age_req.get("min", 0) <= int(user.get("age", 0)) <= age_req.get("max", 100)):
+        # If eligibility is empty, skip unless you want truly universal schemes
+        if not eligibility:
+            continue
+
+        # Age (support both formats)
+        if "age" in eligibility:
+            min_age = eligibility["age"].get("min", 0)
+            max_age = eligibility["age"].get("max", 200)
+            if not (min_age <= user_data["age"] <= max_age):
+                eligible = False
+        else:
+            min_age = eligibility.get("min_age")
+            max_age = eligibility.get("max_age")
+            if min_age is not None and user_data["age"] < min_age:
+                eligible = False
+            if max_age is not None and user_data["age"] > max_age:
                 eligible = False
 
-        # Check gender
-        gender_req = eligibility.get("gender")
-        if gender_req:
-            if user.get("gender") not in gender_req:
+        # Gender
+        if "gender" in eligibility:
+            if user_data["gender"] not in [g.lower() for g in eligibility["gender"]]:
                 eligible = False
 
-        # Check min_children
-        min_children = eligibility.get("min_children")
-        if min_children:
-            if int(user.get("numChildren", 0)) < min_children:
+        # Income
+        if "income" in eligibility:
+            if user_data["income"] > eligibility["income"].get("max", float("inf")):
                 eligible = False
 
-        # Check income
-        income_req = eligibility.get("income")
-        if income_req:
-            if int(user.get("income", 0)) > income_req.get("max", float("inf")):
+        # Min children
+        if "min_children" in eligibility:
+            if user_data["numChildren"] < eligibility["min_children"]:
                 eligible = False
 
-        # Check category (optional)
-        category_req = eligibility.get("category")
-        if category_req:
-            if user.get("category") not in category_req:
+        # Profession
+        if "profession" in eligibility:
+            if user_data["profession"] not in [p.lower() for p in eligibility["profession"]]:
+                eligible = False
+
+        # State
+        if "state" in eligibility:
+            if user_data["state"] not in [s.lower() for s in eligibility["state"]]:
+                eligible = False
+
+        # Category
+        if "category" in eligibility:
+            if user_data["category"] not in [c.lower() for c in eligibility["category"]]:
                 eligible = False
 
         if eligible:

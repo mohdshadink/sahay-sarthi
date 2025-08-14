@@ -4,17 +4,19 @@ function SchemeCard({ scheme }) {
   return (
     <div
       style={{
-        border: "1px solid #ccc",
+        border: "1px solid #ddd",
         borderRadius: "10px",
         padding: "15px",
         marginBottom: "15px",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-        backgroundColor: "#f9f9f9",
+        boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+        backgroundColor: "#fafafa",
       }}
     >
-      <h3 style={{ margin: "0 0 10px 0", color: "#2c3e50" }}>{scheme.name}</h3>
-      <p style={{ margin: "5px 0", fontWeight: "bold" }}>{scheme.description}</p>
-      <p style={{ margin: "5px 0", color: "#16a085" }}>Benefit: {scheme.benefit}</p>
+      <h3 style={{ margin: "0 0 10px 0" }}>{scheme.name}</h3>
+      <p style={{ margin: "0 0 5px 0", fontStyle: "italic", color: "#555" }}>
+        {scheme.description}
+      </p>
+      <p style={{ margin: "5px 0", fontWeight: "bold" }}>Benefit: {scheme.benefit}</p>
       <a
         href={scheme.application_link}
         target="_blank"
@@ -22,9 +24,9 @@ function SchemeCard({ scheme }) {
         style={{
           display: "inline-block",
           marginTop: "10px",
-          padding: "8px 15px",
-          backgroundColor: "#2980b9",
-          color: "#fff",
+          padding: "8px 12px",
+          backgroundColor: "#4CAF50",
+          color: "white",
           borderRadius: "5px",
           textDecoration: "none",
         }}
